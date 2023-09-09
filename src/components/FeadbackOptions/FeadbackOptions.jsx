@@ -2,19 +2,18 @@ import { Component } from 'react';
 
 class FeadbackOptions extends Component {
   render() {
-    const { onLeaveFeedback } = this.props;
+    const { onLeaveFeedback, options } = this.props;
     return (
       <>
         <ul>
-          <li>
-            <button onClick={onLeaveFeedback}>Good</button>
-          </li>
-          <li>
-            <button onClick={onLeaveFeedback}>Neutral</button>
-          </li>
-          <li>
-            <button onClick={onLeaveFeedback}>Bad</button>
-          </li>
+          {options.map(el => (
+            <li key={el}>
+              <button onClick={()=> onLeaveFeedback(el)}>
+                {el.charAt(0).toUpperCase() + el.slice(1)}
+                {/* можна було й зробити через css але захотілось так */}
+              </button>
+            </li>
+          ))}
         </ul>
       </>
     );
