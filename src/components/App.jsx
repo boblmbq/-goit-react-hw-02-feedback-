@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import FeadbackOptions from './FeadbackOptions';
 import Section from './Section';
-import Notification from './Notification';
+import Statistics from './Statistics';
 
 export class App extends Component {
   state = {
@@ -14,41 +14,26 @@ export class App extends Component {
       [elem]: prev[elem] + 1,
     }));
   };
-  countTotalFeedback = (...d) => {
-    return d.reduce((acc, item) => {
-      return acc + item;
-    });
+  countTotalFeedback = () => {
+    return Object.values(this.state).reduce((acc, item) => acc + item);
   };
   countPositiveFeedbackPercentage = () => {
-    const { bad, good, neutral } = this.state;
-    return `${Math.floor(
-      (good / this.countTotalFeedback(good, bad, neutral)) * 100
-    )}%`;
+    const { good } = this.state;
+    return `${Math.floor((good / this.countTotalFeedback()) * 100)}%`;
   };
 
   render() {
-    const { good, bad, neutral } = this.state;
     return (
       <Section title="Please leave feedback">
         <FeadbackOptions
           onLeaveFeedback={this.onLeaveFeedback}
           options={Object.keys(this.state)}
         />
-        <h2>Statistics</h2>
-        {this.countTotalFeedback(good, bad, neutral) ? (
-          <ul>
-            <li>Good: {good}</li>
-            <li>Neutral: {neutral}</li>
-            <li>Bad: {bad}</li>
-            <li>Total: {this.countTotalFeedback(good, bad, neutral)}</li>
-            <li>
-              Positeve feedback:
-              {this.countPositiveFeedbackPercentage()}
-            </li>
-          </ul>
-        ) : (
-          <Notification message={'There is no statistics yet'} />
-        )}
+        <Statistics
+          totalFeadback={this.countTotalFeedback()}
+          positivePercentage={this.countPositiveFeedbackPercentage()}
+          data={this.state}
+        />
       </Section>
     );
   }
