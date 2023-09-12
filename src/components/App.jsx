@@ -2,7 +2,7 @@ import { Component } from 'react';
 import FeadbackOptions from './FeadbackOptions';
 import Section from './Section';
 import Statistics from './Statistics';
-import { ThemeProvider } from '@emotion/react';
+import Notification from './Notification';
 
 export class App extends Component {
   state = {
@@ -25,30 +25,26 @@ export class App extends Component {
 
   render() {
     return (
-      <ThemeProvider
-        theme={{
-          colors: {
-            neutral: '#e3e0cf',
-            good: 'green',
-            bad: 'red',
-          },
-          spacing: (value) => {
-            return `${value * 4}px`;
-          }
-        }}
-      >
-        <Section title="Please leave feedback">
+      <>
+        <Section titleText="Please leave feedback" title="h1">
           <FeadbackOptions
             onLeaveFeedback={this.onLeaveFeedback}
             options={Object.keys(this.state)}
           />
-          <Statistics
-            totalFeadback={this.countTotalFeedback()}
-            positivePercentage={this.countPositiveFeedbackPercentage()}
-            data={this.state}
-          />
         </Section>
-      </ThemeProvider>
+
+        <Section titleText="Statistics" title="h2">
+          {this.countTotalFeedback() ? (
+            <Statistics
+              totalFeadback={this.countTotalFeedback()}
+              positivePercentage={this.countPositiveFeedbackPercentage()}
+              data={this.state}
+            />
+          ) : (
+            <Notification message={'There is no statistics yet'} />
+          )}
+        </Section>
+      </>
     );
   }
 }
