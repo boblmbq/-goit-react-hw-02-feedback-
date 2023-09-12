@@ -1,5 +1,4 @@
-const Section = ({ titleText, title, children }) => {
-  const Title = title;
+const Section = ({ titleText, title: Title, children }) => {
   return (
     <section>
       <Title>{titleText}</Title>
